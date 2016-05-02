@@ -7,7 +7,9 @@ var app = express();
 var port = process.env.PORT || 3030;
 
 app.get('/',function(req,res){
-    var ipaddress = req.ip;
+    var ipaddress = req.headers["X-Forwarded-For"]
+                    || req.headers["x-forwarded-for"]
+                    || req.client.remoteAddress;
     var language = req.headers['accept-language'].split(',')[0];
     var regExp = /\(([^)]+)\)/;
     var software = regExp.exec(req.headers['user-agent'])[1];
